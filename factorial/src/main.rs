@@ -1,0 +1,194 @@
+use std::io;
+
+fn fact(n: i32) -> i32 {
+    if n == 0 {
+        1
+    } else {
+        let x = fact(n - 1);
+        n * x
+    }
+}
+
+fn main() {
+    let mut input = String::new();
+
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
+
+    let u_int: i32 = input.trim().parse().expect("Please type a number!");
+    //let u_int = input.trim().parse::<i32>().expect("Please type a number!");
+
+    let res = fact(u_int);
+    println!("fact({}) = {}", u_int, res);
+}
+
+/* fn main() {
+    let mut a: i32 = 0;
+    a = a + 1;
+    println!("{}", a);
+} */
+
+/* fn main() {
+    let x = 5;
+    let x: i32 = 5; //type annotation
+    let mut x = 5; //mutable x: i32
+    x = 10;
+} */
+
+/* fn main() {
+    let x = (let y = 6);
+} */
+
+/* fn main() {
+    another_function(5, 6);
+}
+
+fn another_function(x: i32, y: i32) {
+    println!("The value of x is: {}", x);
+    println!("The value of y is: {}", y);
+} */
+
+/* fn main() {
+    let x = 5;
+
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {}", y);
+} */
+
+/* fn main() {
+    let x = plus_one(5);
+    println!("The value of x is: {}", x);
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+} */
+
+/* fn main() {
+    let c = 'z';
+    let z = 'ℤ';
+    let heart_eyed_cat = '😻';
+} */
+
+/* fn main() {
+    let tup = (500, 6.4, 1);
+    let (x, y, z) = tup;
+    println!("The value of y is: {}", y);
+} */
+
+/* fn main() {
+    let x: (i32, f64, u8) = (500, 6.4, 1);
+    let five_hundred = x.0;
+    let six_point_four = x.1;
+    let one = x.2;
+} */
+
+/* fn main() {
+    let a = [1, 2, 3, 4, 5];
+    let first = a[0];
+    let second = a[1];
+} */
+
+/* fn main() {
+    let a = [1, 2, 3, 4, 5];
+    let index = 10;
+
+    let element = a[index];
+
+    println!("The value of element is: {}", element);
+} */
+
+/* fn main() {
+    let number = 6;
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 3 == 0 {
+        println!("number is divisible by 3");
+    } else if number % 2 == 0 {
+        println!("number is divisible by 2");
+    } else {
+        println!("number is not divisible by 4, 3, or 2");
+    }
+} */
+
+/* fn main() {
+    let number = 3;
+
+    if number {
+        println!("number was three");
+    }
+} */
+
+/* fn main() {
+    let number = 3;
+
+    if number != 0 {
+        println!("number was something other than zero");
+    }
+} */
+
+/* fn main() {
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+
+    println!("The value of number is: {}", number);
+} */
+
+/* fn main() {
+    let condition = true;
+
+    let number = if condition { 5 } else { "six" };
+
+    println!("The value of number is: {}", number);
+} */
+
+/* fn main() {
+    loop {
+        println!("again!");
+    }
+} */
+
+/* fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {}", result);
+} */
+
+/* fn main() {
+    let a = [10, 20, 30, 40, 50];
+    let mut index = 0;
+
+    while index < 5 {
+        println!("the value is: {}", a[index]);
+
+        index += 1;
+    }
+} */
+
+/* fn main() {
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a.iter() {
+        println!("the value is: {}", element);
+    }
+} */
+
+/* fn main() {
+    for x in (1..10).step_by(2) {
+        println!("{}", x);
+    }
+} */
