@@ -1,28 +1,3 @@
-/* use std::io;
-
-fn fact(n: i32) -> i32 {
-    if n == 0 {
-        1
-    } else {
-        let x = fact(n - 1);
-        n * x
-    }
-}
-
-fn main() {
-    let mut input = String::new();
-
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read line");
-
-    let u_int: i32 = input.trim().parse().expect("Please type a number!");
-    //let u_int = input.trim().parse::<i32>().expect("Please type a number!");
-
-    let res = fact(u_int);
-    println!("fact({}) = {}", u_int, res);
-} */
-
 /* fn main() {
     let mut a: i32 = 0;
     a = a + 1;
@@ -181,6 +156,31 @@ fn plus_one(x: i32) -> i32 {
         nanoseconds + inches
     );
 } */
+
+/* use std::io;
+
+fn fact(n: i32) -> i32 {
+    if n == 0 {
+        1
+    } else {
+        let x = fact(n - 1);
+        n * x
+    }
+}
+
+fn main() {
+    let mut input = String::new();
+
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
+
+    let u_int: i32 = input.trim().parse().expect("Please type a number!");
+    //let u_int = input.trim().parse::<i32>().expect("Please type a number!");
+
+    let res = fact(u_int);
+    println!("fact({}) = {}", u_int, res);
+}
 
 /* fn main() {
     loop {
