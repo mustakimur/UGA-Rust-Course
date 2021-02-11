@@ -148,6 +148,40 @@ fn plus_one(x: i32) -> i32 {
     println!("The value of number is: {}", number);
 } */
 
+// type casting
+/* fn main() {
+    let decimal: f32 = 65.4321;
+    //let integer: u32 = decimal;
+
+    let integer: u32 = decimal as u32;
+    println!("{} => {}", decimal, integer);
+
+    //let character: char = integer as char;
+    let short_integer: u8 = integer as u8;
+    let character: char = short_integer as char;
+    println!("{} => {} => {}", integer, short_integer, character);
+
+    let s_integer: i32 = -10;
+    let integer: u32 = s_integer as u32;
+    println!("{} => {}", s_integer, integer);
+} */
+
+// aliasing
+/* fn main() {
+    type NanoSecond = u64;
+    type Inch = u64;
+
+    let nanoseconds: NanoSecond = 5;
+    let inches: Inch = 2;
+
+    println!(
+        "{} nanoseconds + {} inches = {} unit?",
+        nanoseconds,
+        inches,
+        nanoseconds + inches
+    );
+} */
+
 /* fn main() {
     loop {
         println!("again!");
@@ -191,38 +225,4 @@ fn plus_one(x: i32) -> i32 {
     for x in (1..10).step_by(2) {
         println!("{}", x);
     }
-} */
-
-// type casting
-/* fn main() {
-    let decimal: f32 = 65.4321;
-    //let integer: u32 = decimal;
-
-    let integer: u32 = decimal as u32;
-    println!("{} => {}", decimal, integer);
-
-    //let character: char = integer as char;
-    let short_integer: u8 = integer as u8;
-    let character: char = short_integer as char;
-    println!("{} => {} => {}", integer, short_integer, character);
-
-    let s_integer: i32 = -10;
-    let integer: u32 = s_integer as u32;
-    println!("{} => {}", s_integer, integer);
-} */
-
-// aliasing
-/* fn main() {
-    type NanoSecond = u64;
-    type Inch = u64;
-
-    let nanoseconds: NanoSecond = 5;
-    let inches: Inch = 2;
-
-    println!(
-        "{} nanoseconds + {} inches = {} unit?",
-        nanoseconds,
-        inches,
-        nanoseconds + inches
-    );
 } */
