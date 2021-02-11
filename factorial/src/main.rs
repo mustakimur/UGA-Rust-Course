@@ -180,7 +180,7 @@ fn main() {
 
     let res = fact(u_int);
     println!("fact({}) = {}", u_int, res);
-}
+} */
 
 /* fn main() {
     loop {
