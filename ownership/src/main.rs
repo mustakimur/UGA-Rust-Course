@@ -191,7 +191,10 @@ fn main() {
    // code20();
 
    // code exercise
-   swap_example();
+   // swap_example();
+
+   // code slices
+   code21();
 }
 
 // Code 12 [lecture]
@@ -563,4 +566,60 @@ fn swap_str(mut lstr: String, mut rstr: String) -> (String, String) {
 
 fn swap_str_ref(lstr: &mut String, rstr: &mut String) {
    std::mem::swap(lstr, rstr);
+}
+
+fn code21() {
+   let mut s = String::from("hello world");
+   let len = s.len();
+
+   let hello = &s[0..5];
+   // let hello = &s[..5];
+   let world = &s[6..len];
+   // let world = &s[6..];
+
+   let word = first_word(&s);
+   /*****
+      error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
+      --> src/main.rs:581:4
+       |
+   580 |    let word = first_word(&s);
+       |                          -- immutable borrow occurs here
+   581 |    s.clear();
+       |    ^^^^^^^^^ mutable borrow occurs here
+   582 |    println!("{} => {}", s, word);
+       |                            ---- immutable borrow later used here
+      ******/
+   //s.clear();
+   println!("{} => {}", s, word);
+
+   let my_string_literal = "hello world";
+
+   // Because string literals *are* string slices already,
+   // this works too, without the slice syntax!
+   let word = first_word_str(my_string_literal);
+   println!("{} => {}", s, word);
+}
+
+fn first_word(s: &String) -> &str {
+   let bytes = s.as_bytes();
+
+   for (i, &item) in bytes.iter().enumerate() {
+      if item == b' ' {
+         return &s[0..i];
+      }
+   }
+
+   &s[..]
+}
+
+fn first_word_str(s: &str) -> &str {
+   let bytes = s.as_bytes();
+
+   for (i, &item) in bytes.iter().enumerate() {
+      if item == b' ' {
+         return &s[0..i];
+      }
+   }
+
+   &s[..]
 }
