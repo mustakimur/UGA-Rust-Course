@@ -114,26 +114,26 @@ fn main() {
 
    // Code 8
    /*
-   let x = 15;
-   let y = &x;
-   println!("{} => {}", x, y);
+      let x = 15;
+      let y = &x;
+      println!("{} => {}", x, y);
    */
 
-   // Code 9
+   // Code 9 [discuss]
    /*
    let gv = String::from("source string");
    {
       let lv = gv;
 
-      //println!("{}", gv);
+      println!("{}", gv);
       println!("{}", lv);
    }
 
-   //println!("{}", gv);
-   //println!("{}", lv);
+   println!("{}", gv);
+   println!("{}", lv);
    */
 
-   //Code 10
+   //Code 10 [discuss]
    /*
       let mut x = 5;
       let y = x;
@@ -142,7 +142,7 @@ fn main() {
       println!("{} => {}", x, y);
    */
 
-   // Code 11
+   // Code 11 [lecture, future, one mutable reference, no immutable after]
    /*
    let mut x = 15;
    let y = &x;
@@ -188,10 +188,13 @@ fn main() {
    // code19();
 
    // Code 20
-   code20();
+   // code20();
+
+   // code exercise
+   swap_example();
 }
 
-// Code 12
+// Code 12 [lecture]
 fn code12() {
    let s = String::from("hello"); // s comes into scope
 
@@ -257,7 +260,7 @@ fn makes_copy(some_integer: i32) {
    //some_integer += 10;
 } // Here, some_integer goes out of scope. Nothing special happens.
 
-// Code 13
+// Code 13 [lecture]
 fn code13() {
    let s1 = gives_ownership(); // gives_ownership moves its return
                                // value into s1
@@ -293,7 +296,7 @@ fn takes_and_gives_back(a_string: String) -> String {
    a_string // a_string is returned and moves out to the calling function
 }
 
-// Code 14
+// Code 14 [lecture]
 fn code14() {
    let s1 = String::from("hello");
 
@@ -308,6 +311,7 @@ fn calculate_length1(s: String) -> (String, usize) {
    (s, length)
 }
 
+// code 15 [lecture]
 fn code15() {
    let s1 = String::from("hello");
 
@@ -322,6 +326,7 @@ fn calculate_length2(s: &String) -> usize {
 } // Here, s goes out of scope. But because it does not have ownership of what
   // it refers to, nothing happens.
 
+// code 16 [lecture]
 fn code16() {
    let s = String::from("hello");
 
@@ -341,6 +346,7 @@ fn change1(some_string: &String) {
    //some_string.push_str(", world");
 }
 
+// code 17 [lecture]
 fn code17() {
    let mut s = String::from("hello");
    println!("Before: {}", s);
@@ -357,6 +363,7 @@ fn change2(some_string: &mut String) {
    some_string.push_str(", world");
 }*/
 
+// code 18 [lecture]
 fn code18() {
    let mut s = String::from("hello");
 
@@ -379,6 +386,7 @@ fn code18() {
    //println!("{}, {}", r1, r2);
 }
 
+// code 19 [lecture]
 fn code19() {
    let mut s = String::from("hello");
 
@@ -426,6 +434,7 @@ fn mixedScope() {
    println!("{}", r3);
 }
 
+// code 20
 fn code20() {
    //let reference_to_nothing = dangle();
    let reference_to_nothing = no_dangle();
@@ -458,4 +467,100 @@ fn no_dangle() -> String {
    let s = String::from("hello");
 
    s
+}
+
+// code exercise
+fn swap_example() {
+   // for two scalar value
+   let mut i10 = 10;
+   let mut i20 = 20;
+
+   println!("[1] Before: i10 = {}, i20 = {}", i10, i20);
+
+   let t = i10;
+   i10 = i20;
+   i20 = t;
+
+   println!("[1] After: i10 = {}, i20 = {}", i10, i20);
+   //println!("t = {}", t);
+
+   // for two string type value
+   let mut l = String::from("left");
+   let mut r = String::from("right");
+
+   println!("[2] Before: l = {}, r = {}", l, r);
+
+   let t = l;
+   l = r;
+   r = t;
+   println!("[2] After: l = {}, r = {}", l, r);
+   // we cannot use t anymore
+   //println!("t = {}", t);
+
+   let mut i10 = 10;
+   let mut i20 = 20;
+
+   println!("[3] Before: i10 = {}, i20 = {}", i10, i20);
+
+   let (i10, i20) = swap_int(i10, i20);
+
+   println!("[3] After: i10 = {}, i20 = {}", i10, i20);
+
+   // Reference
+
+   let mut i10 = 10;
+   let mut i20 = 20;
+
+   println!("[4] Before: i10 = {}, i20 = {}", i10, i20);
+
+   swap_int_ref(&mut i10, &mut i20);
+
+   println!("[4] After: i10 = {}, i20 = {}", i10, i20);
+
+   // string swap using function
+
+   let mut l = String::from("left");
+   let mut r = String::from("right");
+
+   println!("[5] Before: l = {}, r = {}", l, r);
+
+   let (l, r) = swap_str(l, r);
+
+   println!("[5] After: l = {}, r = {}", l, r);
+
+   // string swap using function (ref)
+
+   let mut l = String::from("left");
+   let mut r = String::from("right");
+
+   println!("[6] Before: l = {}, r = {}", l, r);
+
+   swap_str_ref(&mut l, &mut r);
+
+   println!("[6] After: l = {}, r = {}", l, r);
+}
+
+fn swap_int(mut a: i32, mut b: i32) -> (i32, i32) {
+   let t = a;
+   a = b;
+   b = t;
+   (a, b)
+}
+
+fn swap_int_ref(a: &mut i32, b: &mut i32) {
+   *a ^= *b;
+   *b ^= *a;
+   *a ^= *b;
+}
+
+fn swap_str(mut lstr: String, mut rstr: String) -> (String, String) {
+   let t = lstr;
+   lstr = rstr;
+   rstr = t;
+
+   (lstr, rstr)
+}
+
+fn swap_str_ref(lstr: &mut String, rstr: &mut String) {
+   std::mem::swap(lstr, rstr);
 }
