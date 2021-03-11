@@ -182,7 +182,7 @@ fn main() {
    // code17();
 
    // Code 18
-   // code18();
+   code18();
 
    // Code 19
    // code19();
@@ -194,7 +194,7 @@ fn main() {
    // swap_example();
 
    // code slices
-   code21();
+   // code21();
 }
 
 // Code 12 [lecture]
@@ -387,6 +387,7 @@ fn code18() {
    //let r2 = &mut s;
 
    //println!("{}, {}", r1, r2);
+   println!("{}", r1);
 }
 
 // code 19 [lecture]
