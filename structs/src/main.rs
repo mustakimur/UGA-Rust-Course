@@ -32,13 +32,13 @@ fn main() {
     // code6();
 
     // code 7
-    // code7();
+    code7();
 
     // code 8
     // code8();
 
     // code 9
-    code9();
+    // code9();
 }
 
 fn code1() {
