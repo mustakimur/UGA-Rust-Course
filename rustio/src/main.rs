@@ -10,7 +10,7 @@ fn main() {
     //cmd_arg();
 
     //println!("Standard input: ");
-    //std_io_01();
+    std_io_01();
     //std_io_02();
     //std_io_03();
 
@@ -18,7 +18,7 @@ fn main() {
     //tcp_conn_01();
     //tcp_conn_02();
     //tcp_conn_03();
-    tcp_conn_04();
+    //tcp_conn_04();
 }
 
 fn cmd_arg() {

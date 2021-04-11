@@ -15,8 +15,8 @@ fn main() {
     //println!("Code for joining new thread with main thread ...");
     //thread_join();
 
-    //println!("Code where new thread is trying to use values of main thread ...");
-    //thread_share();
+    println!("Code where new thread is trying to use values of main thread ...");
+    thread_share();
 
     //println!("Code where new thread is trying to use values of main thread through moving ...");
     //thread_move_share();
