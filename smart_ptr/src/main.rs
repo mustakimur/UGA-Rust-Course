@@ -184,10 +184,10 @@ impl Drop for CustomSmartPointer {
 
 fn code9() {
     let c = CustomSmartPointer {
-        data: String::from("my stuff"),
+        data: String::from("c instance"),
     };
     let d = CustomSmartPointer {
-        data: String::from("other stuff"),
+        data: String::from("d instance"),
     };
     println!("CustomSmartPointers created.");
 }
@@ -207,12 +207,12 @@ enum List2 {
     Nil,
 }
 
+use std::rc::Rc;
+
 enum List3 {
     Cons(i32, Rc<List3>),
     Nil,
 }
-
-use std::rc::Rc;
 
 fn code11() {
     /* let a = List2::Cons(5, Box::new(List2::Cons(10, Box::new(List2::Nil))));
