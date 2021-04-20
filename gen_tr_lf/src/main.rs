@@ -218,15 +218,15 @@ fn notify(item: &impl Summary) {
     println!("Breaking news! {}", item.summarize());
 } */
 
-fn returns_summarizable(switch: bool) -> impl Summary {
-    Tweet {
+fn returns_summarizable(switch: bool) -> Box<dyn Summary> {
+    /* Tweet {
         username: String::from("horse_ebooks"),
         content: String::from("of course, as you probably already know, people"),
         reply: false,
         retweet: false,
-    }
-    /* if switch {
-        NewsArticle {
+    } */
+    if switch {
+        Box::new(NewsArticle {
             headline: String::from("Penguins win the Stanley Cup Championship!"),
             location: String::from("Pittsburgh, PA, USA"),
             author: String::from("Iceburgh"),
@@ -234,15 +234,15 @@ fn returns_summarizable(switch: bool) -> impl Summary {
                 "The Pittsburgh Penguins once again are the best \
                  hockey team in the NHL.",
             ),
-        }
+        })
     } else {
-        Tweet {
+        Box::new(Tweet {
             username: String::from("horse_ebooks"),
             content: String::from("of course, as you probably already know, people"),
             reply: false,
             retweet: false,
-        }
-    } */
+        })
+    }
 }
 
 fn code_04() {
