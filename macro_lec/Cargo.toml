@@ -1,0 +1,11 @@
+[package]
+name = "macro_lec"
+version = "0.1.0"
+authors = ["Mustakimur Khandaker <mrkhandaker@uga.edu>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tr_macro = {path = "/home/mustakim/Teaching/rust_classwork/tr_macro", version="0.1.0", registry="my-registry"}
+tr_macro_derive = { path = "/home/mustakim/Teaching/rust_classwork/tr_macro/tr_macro_derive",  version="0.1.0", registry="my-registry"}
