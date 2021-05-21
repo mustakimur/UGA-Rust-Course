@@ -34,7 +34,9 @@ fn main() {
     //println!("our vector: {:?}", v);
 
     //Pancakes::hello_macro();
-    Waffle::hello_macro();
+    //Waffle::hello_macro();
+
+    //let sql = sql!(SELECT * FROM posts WHERE id=1);
 }
 
 /* fn act_mm_vec() -> Vec<i32> {
@@ -43,4 +45,13 @@ fn main() {
     temp_vec.push(2);
     temp_vec.push(3);
     temp_vec
+} */
+
+/* use proc_macro;
+
+#[some_attribute]
+pub fn some_name(input: TokenStream) -> TokenStream {} */
+
+/* #[route(GET, "/")]
+fn index() {
 } */
