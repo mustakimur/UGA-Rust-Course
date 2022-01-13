@@ -16,15 +16,6 @@
 } */
 
 /* fn main() {
-    another_function(5, 6);
-}
-
-fn another_function(x: i32, y: i32) {
-    println!("The value of x is: {}", x);
-    println!("The value of y is: {}", y);
-} */
-
-/* fn main() {
     let x = 5;
 
     let y = {
@@ -32,6 +23,15 @@ fn another_function(x: i32, y: i32) {
         x + 1
     };
 
+    println!("The value of y is: {}", y);
+} */
+
+/* fn main() {
+    another_function(5, 6);
+}
+
+fn another_function(x: i32, y: i32) {
+    println!("The value of x is: {}", x);
     println!("The value of y is: {}", y);
 } */
 
@@ -50,6 +50,20 @@ fn plus_one(x: i32) -> i32 {
     let heart_eyed_cat = '😻';
 } */
 
+/* fn main(){
+    let mut x = 10u32;
+    x = -10;
+    let y = 1_000_000;
+    let z = 2_00 + y;
+    println!("{0} == {0}", z);
+    let b = 0b1010;
+    println!("{} = {:b}", b, b);
+    let ascii = b'A';
+    println!("{}", ascii);
+    let f:f64 = -3.1416;
+    println!("{}", f);
+} */
+
 /* fn main() {
     let tup = (500, 6.4, 1);
     let (x, y, z) = tup;
@@ -61,6 +75,12 @@ fn plus_one(x: i32) -> i32 {
     let five_hundred = x.0;
     let six_point_four = x.1;
     let one = x.2;
+} */
+
+/* fn main(){
+    let mut tt: (char, i32, f32) = ('A', 65, 65.0);
+    tt.0 = 'C';
+    println!("{:?}", tt);
 } */
 
 /* fn main() {
@@ -76,6 +96,13 @@ fn plus_one(x: i32) -> i32 {
     let element = a[index];
 
     println!("The value of element is: {}", element);
+} */
+
+/* fn main(){
+    let arr: [i32; 5] = [1,2,3,4,5];
+    for n in 1..=10{
+        println!("{}", arr[n]);
+    }
 } */
 
 /* fn main() {

@@ -1,5 +1,5 @@
 [package]
-name = "factorial"
+name = "basic"
 version = "0.1.0"
 authors = ["Mustakimur Rahman <mustakcsecuet@gmail.com>"]
 edition = "2018"
