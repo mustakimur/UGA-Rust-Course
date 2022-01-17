@@ -105,7 +105,7 @@ fn plus_one(x: i32) -> i32 {
     }
 } */
 
-/* fn main() {
+fn main() {
     let number = 6;
 
     if number % 4 == 0 {
@@ -117,7 +117,7 @@ fn plus_one(x: i32) -> i32 {
     } else {
         println!("number is not divisible by 4, 3, or 2");
     }
-} */
+}
 
 /* fn main() {
     let number = 3;
@@ -166,6 +166,17 @@ fn plus_one(x: i32) -> i32 {
     let s_integer: i32 = -10;
     let integer: u32 = s_integer as u32;
     println!("{} => {}", s_integer, integer);
+} */
+
+/* fn main() {
+    let sinteger = -10;
+    let uinteger:u32 = 25;
+
+    if sinteger == uinteger {
+        println!("it's a match");
+    } else {
+        println!("{} != {}", sinteger, uinteger);
+    }
 } */
 
 // aliasing
