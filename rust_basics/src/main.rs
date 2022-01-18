@@ -226,6 +226,19 @@ fn main() {
     }
 } */
 
+/* #[macro_use]
+extern crate scan_rules;
+
+fn main() {
+    let result = try_readln! {
+        (let n: u32, let m: u32) => (n, m)
+    };
+    match result {
+        Ok((n, m)) => println!("I read n={}, m={}", n, m),
+        Err(e) => println!("Failed to parse input: {}", e),
+    }
+} */
+
 /* fn main() {
     let mut counter = 0;
 
