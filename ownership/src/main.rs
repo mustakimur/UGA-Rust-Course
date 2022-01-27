@@ -14,14 +14,17 @@ fn main() {
    */
 
    // Code 2
-   /*
+   /* 
       // you cannot store a literal to a String type
       // let src: String = "hello";
 
       let s: String = String::from("string literal to String");
       //s.push_str(", world!"); // without mut String, cannot borrow it
       println!("{}", s);
-   */
+
+      let s1: String = String::from(s);
+      println!("{}", s1);
+    */
 
    // Code 3
    /*
@@ -120,8 +123,8 @@ fn main() {
    */
 
    // Code 9 [discuss]
-   /*
-   let gv = String::from("source string");
+   /* 
+   let mut gv = String::from("source string");
    {
       let lv = gv;
 
@@ -194,7 +197,7 @@ fn main() {
    // swap_example();
 
    // code slices
-   code21();
+   // code21();
 }
 
 // Code 12 [lecture]
