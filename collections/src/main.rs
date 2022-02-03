@@ -4,43 +4,45 @@ fn main() {
     code1();
 
     // Code 2
-    println!("Code 2 output:");
-    code2();
+    // println!("Code 2 output:");
+    // code2();
 
     // Code 3
-    println!("Code 3 output:");
-    code3();
+    // println!("Code 3 output:");
+    // code3();
 
     // Code 4
-    println!("Code 4 output:");
-    code4();
+    //println!("Code 4 output:");
+    //code4();
 
     // code 8
-    println!("Code 8 output:");
-    code8();
+    //println!("Code 8 output:");
+    //code8();
 
     // code 9
-    println!("Code 9 output:");
-    code9();
+    //println!("Code 9 output:");
+    //code9();
 
     // code 10
-    println!("Code 10 output:");
-    code10();
+    //println!("Code 10 output:");
+    //code10();
 
     // code 11
-    println!("Code 11 output:");
-    code11();
+    //println!("Code 11 output:");
+    //code11();
 
     // code 12
-    println!("Code 12 output:");
-    code12();
+    //println!("Code 12 output:");
+    //code12();
 }
 
 use std::io;
 
 fn code1() {
-    let mut v = vec![1, 2, 3, 4, 5];
+    let v = vec![1, 2, 3, 4, 5];
     //v.push(6);
+
+    println!("The vector is {:?}", v);
 
     let first = &v[0];
     println!("The first element is: {}", first);
@@ -63,18 +65,32 @@ fn code1() {
 
     let user_choice = &v[u_int];
     println!("The user choice element is: {}", user_choice); */
+
+    //code2e();
 }
 
 fn code2() {
     let v = vec![1, 2, 3, 4, 5];
 
-    let third: &i32 = &v[2];
-    println!("The third element is {}", third);
+    let mut input = String::new();
 
-    match v.get(2) {
-        Some(third) => println!("The third element is {}", third),
-        None => println!("There is no third element."),
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
+
+    let u_int: usize = input.trim().parse().expect("Please type a number!");
+
+    match v.get(u_int) {
+        Some(item) => println!("The third element is {}", item),
+        None => println!("There is no item element."),
     }
+}
+
+fn code2e(){
+    let mut v = vec![1, 2, 3, 4, 5];
+    let first = &v[0];
+    //v.push(6);
+    println!("Selected element is: {}", first);
 }
 
 fn code3() {

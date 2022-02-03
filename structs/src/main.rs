@@ -23,7 +23,7 @@ fn main() {
     // code3(user);
 
     // code 4
-    // code4();
+    code4();
 
     // code 5
     // code5();
@@ -32,13 +32,13 @@ fn main() {
     // code6();
 
     // code 7
-    code7();
+    // code7();
 
     // code 8
     // code8();
 
     // code 9
-    // code9();
+    //code9();
 }
 
 fn code1() {
@@ -122,7 +122,7 @@ error[E0308]: mismatched types
    |                   help: try using a conversion method: `"someusername123".to_string()`
 */
 
-/*struct UserSTR {
+struct UserSTR {
     username: &str,
     email: &str,
     sign_in_count: u64,
@@ -130,13 +130,13 @@ error[E0308]: mismatched types
 }
 
 fn code5() {
-    let user1 = User {
+    let user1 = UserSTR {
         email: "someone@example.com",
         username: "someusername123",
         active: true,
         sign_in_count: 1,
     };
-}*/
+}
 
 #[derive(Debug)]
 struct Rectangle {
@@ -191,7 +191,7 @@ fn code8() {
         height: 45,
     };
 
-    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect2? {}", (&rect1).can_hold(&rect2));
     println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
 }
 
