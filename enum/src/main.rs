@@ -1,33 +1,33 @@
 fn main() {
     // Code 1
-    println!("Code 1 output:");
-    code1();
+    //println!("Code 1 output:");
+    //code1();
 
     // code 2
-    println!("Code 2 output:");
-    code2();
+    //println!("Code 2 output:");
+    //code2();
 
     // code 3
-    println!("Code 3 output:");
-    code3();
+    //println!("Code 3 output:");
+    //code3();
 
     // code 4
-    println!("Code 4 output:");
-    code4();
+    //println!("Code 4 output:");
+    //code4();
 
     // code 5
-    println!("Code 5 output:");
-    code5();
+    //println!("Code 5 output:");
+    //code5();
 
     // code 6
-    println!("Code 6 output:");
-    code6();
+    //println!("Code 6 output:");
+    //code6();
 
     // code 7
     println!("Code 7 output:");
     code7();
 }
-
+#[derive(Debug)]
 enum IpAddrKind {
     V4,
     V6,
@@ -38,6 +38,9 @@ struct IpAddr {
 }
 
 fn code1() {
+    let kind: IpAddrKind = IpAddrKind::V4;
+    println!("{:#?}", kind);
+
     let home = IpAddr {
         kind: IpAddrKind::V4,
         address: String::from("127.0.0.1"),
@@ -58,6 +61,7 @@ fn print_ip(ip: &IpAddr) {
     }
 }
 
+#[derive(Debug)]
 enum IpAddrVariants {
     V4(u8, u8, u8, u8),
     V6(String),
@@ -73,6 +77,10 @@ impl IpAddrVariants {
 }
 
 fn code2() {
+    let kind = IpAddrVariants::V4;
+
+    println!("{:#?}", kind(0, 0, 0, 0));
+
     let home = IpAddrVariants::V4(127, 0, 0, 1);
     let loopback = IpAddrVariants::V6(String::from("::1"));
 
@@ -140,6 +148,9 @@ fn value_in_cents(coin: Coin) -> u8 {
 }
 
 fn code4() {
+    let ret = value_in_cents(Coin::Nickel);
+    println!("Coin values is {}", ret);
+
     let ret = value_in_cents(Coin::Quarter(UsState::Georgia));
     println!("Coin values is {}", ret);
 
@@ -173,6 +184,10 @@ fn code6() {
     let none = plus_one(None);
 
     println!("{}, {}", five.unwrap(), six.unwrap());
+
+    if five == Some(5){
+        println!("it is five");
+    }
 }
 
 fn code7() {
@@ -190,4 +205,9 @@ fn code7() {
     }
 
     println!("The count is {}", count);
+
+    let five = Some(5);
+    if let Some(val) = five {
+        println!("{}", val);
+    }
 }
