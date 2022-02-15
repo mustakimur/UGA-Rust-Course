@@ -1,15 +1,15 @@
 fn main() {
     // Code 1
-    println!("Code 1 output:");
-    code1();
+    //println!("Code 1 output:");
+    //code1();
 
     // Code 2
     // println!("Code 2 output:");
     // code2();
 
     // Code 3
-    // println!("Code 3 output:");
-    // code3();
+    //println!("Code 3 output:");
+    //code3();
 
     // Code 4
     //println!("Code 4 output:");
@@ -32,8 +32,8 @@ fn main() {
     //code11();
 
     // code 12
-    //println!("Code 12 output:");
-    //code12();
+    println!("Code 12 output:");
+    code12();
 }
 
 use std::io;
@@ -86,7 +86,7 @@ fn code2() {
     }
 }
 
-fn code2e(){
+fn code2e() {
     let mut v = vec![1, 2, 3, 4, 5];
     let first = &v[0];
     //v.push(6);
@@ -169,6 +169,7 @@ fn code11() {
     let answer = &hello[0];
     println!("The first character is {}", answer); */
 
+    //let hello = String::from("hello");
     let hello = "Здравствуйте";
     let s = &hello[0..4];
     println!("The first four bytes of the String are {}", s);
@@ -183,23 +184,30 @@ fn code11() {
         print!("{} ", b);
     }
     println!();
+
+    let mut chars = hello.chars();
+    let index: usize = 4;
+    let item = chars.nth(index);
+    println!("{}", item.unwrap());
 }
 
 use std::collections::HashMap;
 
 fn code12() {
-    let mut scores = HashMap::new();
-
     let blue = String::from("Blue");
     let yellow = String::from("Yellow");
     let val10 = 10;
     let val50 = 50;
 
-    scores.insert(blue, val10);
-    scores.insert(yellow, val50);
+    {
+        let mut scores = HashMap::new();
+        scores.insert(&blue, val10);
+        scores.insert(&yellow, val50);
 
-    println!("Example 1: {:#?}", scores);
-    //println!("The keys are {} and {}", blue, yellow);
+        println!("Example 1: {:#?}", scores);
+    }
+
+    println!("The keys are {} and {}", blue, yellow);
     //println!("The keys are {} and {}", val10, val50);
 
     let teams = vec![String::from("Blue"), String::from("Yellow")];
@@ -223,6 +231,8 @@ fn code12() {
     for (key, value) in &scores {
         println!("{}: {}", key, value);
     }
+
+    println!("Example 3: {:#?}", scores);
 
     let text = "hello world wonderful world";
 
