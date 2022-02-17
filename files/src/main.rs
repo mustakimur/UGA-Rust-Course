@@ -9,7 +9,7 @@ use std::io::{BufRead, BufReader, Write};
 use std::{env, fs};
 
 fn main() {
-    panic_msg();
+    //panic_msg();
 
     //file_01();
 
@@ -23,8 +23,9 @@ fn main() {
 
     //file_05();
 
-    // next lecture
     //directory_traversal();
+
+    fd_lock();
 }
 
 fn panic_msg() {
@@ -121,6 +122,12 @@ fn file_05() -> Result<(), io::Error> {
         println!("{}", line?);
     }
 
+    /* let mut s = String::new();
+
+    input.read_to_string(&mut s)?;
+
+    println!("{}", s); */
+
     Ok(())
 }
 
@@ -150,4 +157,26 @@ fn directory_traversal() -> Result<(), Box<dyn Error>> {
     }
 
     Ok(())
+}
+
+extern crate file_lock;
+
+use file_lock::{FileLock, FileOptions};
+
+fn fd_lock() {
+    let should_we_block  = true;
+    let options = FileOptions::new()
+                        .write(true)
+                        .create(true)
+                        .append(true);
+
+    let mut filelock = match FileLock::lock("myfile.txt", should_we_block, options) {
+        Ok(lock) => lock,
+        Err(err) => panic!("Error getting write lock: {}", err),
+    };
+
+    writeln!(filelock.file, "Hello, World");
+
+    // Manually unlocking is optional as we unlock on Drop
+    filelock.unlock();
 }
