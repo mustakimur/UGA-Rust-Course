@@ -9,14 +9,14 @@ fn main() {
     //println!("Code for creating new thread besides main thread ...");
     //thread_basics();
 
-    //println!("Code for creating new thread besides main thread ...");
-    //thread_basics();
-
     //println!("Code for joining new thread with main thread ...");
-    //thread_join();
+    //let handle = thread_join();
+    //handle.join().unwrap();
 
-    println!("Code where new thread is trying to use values of main thread ...");
-    thread_share();
+    //cl_fn_once();
+
+    //println!("Code where new thread is trying to use values of main thread ...");
+    //thread_share();
 
     //println!("Code where new thread is trying to use values of main thread through moving ...");
     //thread_move_share();
@@ -29,15 +29,17 @@ fn main() {
 
     //println!("Code creates a channel, n producer, 1 receiver; multiple message communicates ...");
     //channel_multi_producer();
+
+    //recv_err();
 }
 
 fn closure_fn() {
     let simulated_user_specified_value = 10;
     let simulated_random_number = 7;
 
-    generate_workout(simulated_user_specified_value, simulated_random_number);
+    //generate_workout(simulated_user_specified_value, simulated_random_number);
     //generate_workout_refactor(simulated_user_specified_value, simulated_random_number);
-    //generate_workout_closure(simulated_user_specified_value, simulated_random_number);
+    generate_workout_closure(simulated_user_specified_value, simulated_random_number);
 }
 
 fn simulated_expensive_calculation(intensity: u32) -> u32 {
@@ -84,7 +86,7 @@ fn generate_workout_refactor(intensity: u32, random_number: u32) {
 }
 
 fn generate_workout_closure(intensity: u32, random_number: u32) {
-    let expensive_closure = |num| {
+    let expensive_closure = |num: u32| -> u32 {
         println!("calculating slowly...");
         thread::sleep(Duration::from_secs(2));
         num
@@ -117,20 +119,24 @@ fn thread_basics() {
     }
 }
 
-fn thread_join() {
-    let handle = thread::spawn(|| {
+fn thread_join() -> thread::JoinHandle<()> {
+    let cl_th = || {
         for i in 1..10 {
-            println!("hi number {} from the spawned thread!", i);
-            thread::sleep(Duration::from_millis(1));
+            simulated_expensive_calculation(i);
         }
-    });
+    };
+
+    let handle1 = thread::spawn(cl_th);
+    let handle2 = thread::spawn(cl_th);
 
     for i in 1..5 {
         println!("hi number {} from the main thread!", i);
         thread::sleep(Duration::from_millis(1));
     }
 
-    handle.join().unwrap();
+    handle1.join().unwrap();
+    handle2
+    //handle.join().unwrap();
 }
 
 fn thread_share() {
@@ -162,6 +168,28 @@ fn thread_move_share() {
     //println!("Here's a vector: {:?}", v);
 
     handle.join().unwrap();
+}
+
+fn cl_fn_once() {
+    let x = String::from("x");
+    let consume_and_return_x = move || x;
+    consume_with_relish(consume_and_return_x);
+}
+
+fn consume_with_relish<F>(func: F)
+where
+    F: FnOnce() -> String,
+{
+    // `func` consumes its captured variables, so it cannot be run more
+    // than once.
+    println!("Consumed: {}", func());
+
+    println!("Delicious!");
+
+    //println!("Consumed: {}", func());
+
+    // Attempting to invoke `func()` again will throw a `use of moved
+    // value` error for `func`.
 }
 
 fn channel_communication() {
@@ -213,6 +241,7 @@ fn channel_multi_producer() {
 
         for val in vals {
             tx1.send(val).unwrap();
+            println!("{}", val);
             thread::sleep(Duration::from_secs(1));
         }
     });
@@ -231,7 +260,31 @@ fn channel_multi_producer() {
         }
     });
 
+    //let rx1 = rx.clone();
+
     for received in rx {
         println!("Got: {}", received);
     }
+}
+
+use std::sync::mpsc::RecvError;
+
+fn recv_err() {
+    let (tx, rx) = mpsc::channel();
+    let handle = thread::spawn(move || {
+        let vals = [1, 2, 3, 4];
+
+        tx.send(vals[0]);
+        tx.send(vals[1]);
+        tx.send(vals[2]);
+        drop(tx);
+    });
+
+    // wait for the thread to join so we ensure the sender is dropped
+    handle.join().unwrap();
+
+    rx.recv().unwrap();
+    rx.recv().unwrap();
+    rx.recv().unwrap();
+    //rx.recv().unwrap();
 }

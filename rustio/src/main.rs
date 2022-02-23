@@ -4,20 +4,21 @@ use std::io;
 use std::io::prelude::*;
 use std::net::{SocketAddr, TcpListener, TcpStream};
 use std::thread;
+use std::io::Write;
 
 fn main() {
     //println!("Command-line argument: ");
     //cmd_arg();
 
     //println!("Standard input: ");
-    std_io_01();
+    //std_io_01();
     //std_io_02();
     //std_io_03();
 
     println!("Network I/O code: ");
     //tcp_conn_01();
     //tcp_conn_02();
-    //tcp_conn_03();
+    tcp_conn_03();
     //tcp_conn_04();
 }
 
@@ -25,20 +26,22 @@ fn cmd_arg() {
     let args: Vec<String> = env::args().collect();
     println!("{:?}", args);
 
-    let query = &args[1];
-    let filename = &args[2];
+    //let query = &args[1];
+    //let filename = &args[2];
     //let last = &args[args.len()];
 
     // recommendation
-    /* if args.len() < 3 {
-        panic!("Invalid number of arguments");
+    let mut query: String = String::new();
+    let mut filename = None;
+    if args.len() < 3 {
+        println!("Usage: ./prog string string");
     } else {
-        let query = args[1].clone();
-        let filename = args[2].clone();
-    } */
+        query = args[1].clone();
+        filename = Some(args[2].clone());
+    }
 
     println!("Searching for {}", query);
-    println!("In file {}", filename);
+    println!("In file {}", filename.unwrap_or("Not provided".to_string()));
 }
 
 fn std_io_01() -> io::Result<()> {
@@ -60,7 +63,7 @@ fn std_io_02() {
 
     io::stdin().read_line(&mut input).unwrap();
 
-    let result = input.trim().parse();
+    let result = input.trim().parse::<i32>();
 
     let u_int = match result {
         Ok(num) => num,
@@ -71,6 +74,7 @@ fn std_io_02() {
     };
 
     println!("Input number: {}", u_int);
+    std::io::stdout().write("Tutorials\n".as_bytes()).unwrap();
 }
 
 fn std_io_03() -> io::Result<()> {
@@ -78,11 +82,11 @@ fn std_io_03() -> io::Result<()> {
 
     io::stdin().read_line(&mut val)?;
     let mut substr_iter = val.split_whitespace();
-    let mut next_num = || -> usize {
+    let mut next_num = || {
         substr_iter
             .next()
             .expect("Not enough input numbers")
-            .parse()
+            .parse::<i32>()
             .expect("Input is not a number")
     };
     let val1 = next_num();
