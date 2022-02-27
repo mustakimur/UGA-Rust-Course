@@ -1,25 +1,31 @@
 fn main() {
-    //code_01();
+    //find_large();
 
-    //code_02();
+    //dup_large();
 
-    //code_020();
+    //gen_large();
 
-    //code_03();
+    //gen_struct();
 
-    //code_04();
+    //gen_mix();
 
-    //code_05();
+    //copy_trait();
 
-    //code_06();
+    //impl_trait();
 
-    //code_07();
+    //borrow_val();
 
-    //code_08();
+    //long_live_string();
 
-    //code_09();
+    //inequal_lifetime();
 
-    code_10();
+    //struct_lifeitme();
+
+    //word_lifetime();
+
+    //static_value();
+
+    trait_bound();
 }
 
 fn largest_i32(list: &[i32]) -> &i32 {
@@ -46,7 +52,7 @@ fn largest_char(list: &[char]) -> &char {
     largest
 }
 
-fn code_01() {
+fn find_large() {
     let number_list = vec![34, 50, 25, 100, 65];
 
     let result = largest_i32(&number_list);
@@ -58,7 +64,7 @@ fn code_01() {
     println!("The largest number is {}", result);
 }
 
-fn code_02() {
+fn dup_large() {
     let number_list = vec![34, 50, 25, 100, 65];
 
     let result = largest_i32(&number_list);
@@ -68,34 +74,6 @@ fn code_02() {
 
     let result = largest_char(&char_list);
     println!("The largest char is {}", result);
-}
-
-struct Point<T, U> {
-    x: T,
-    y: U,
-}
-
-impl<T, U> Point<T, U> {
-    fn x(&self) -> &T {
-        &self.x
-    }
-}
-
-impl Point<f32, f32> {
-    fn distance_from_origin(&self) -> f32 {
-        (self.x.powi(2) + self.y.powi(2)).sqrt()
-    }
-}
-
-fn code_020() {
-    let both_integer = Point { x: 5, y: 10 };
-    let both_float = Point { x: 1.0, y: 4.0 };
-
-    println!("p.x = {}", both_integer.x());
-    println!("p.x = {}", both_float.x());
-
-    //println!("p.x = {}", both_integer.distance_from_origin());
-    println!("p.x = {}", both_float.distance_from_origin());
 }
 
 /*
@@ -137,7 +115,7 @@ fn largest<T: PartialOrd>(list: &[T]) -> &T {
     largest
 } */
 
-fn code_03() {
+fn gen_large() {
     let number_list = vec![34, 50, 25, 100, 65];
 
     let result = largest(&number_list);
@@ -159,6 +137,144 @@ fn code_03() {
     println!("The largest char is {}", result);
 }
 
+struct Point<T, U> {
+    x: T,
+    y: U,
+}
+
+impl<T, U> Point<T, U> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+
+impl Point<f32, f32> {
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+}
+
+fn gen_struct() {
+    let both_integer = Point { x: 5, y: 10 };
+    let both_float = Point { x: 1.0, y: 4.0 };
+
+    println!("p.x = {}", both_integer.x());
+    println!("p.x = {}", both_float.x());
+
+    //println!("p.x = {}", both_integer.distance_from_origin());
+    println!("p.x = {}", both_float.distance_from_origin());
+
+    /* let u_x:u32 = 10;
+    let i_y: i32 = -10;
+
+    if (u_x < i_y){
+        println!("integer overflow panic!");
+    } */
+}
+
+struct PointXY<X1, Y1> {
+    x: X1,
+    y: Y1,
+}
+
+impl<X1, Y1> PointXY<X1, Y1> {
+    fn mixup<X2, Y2>(self, other: PointXY<X2, Y2>) -> PointXY<X1, Y2> {
+        PointXY {
+            x: self.x,
+            y: other.y,
+        }
+    }
+}
+
+fn gen_mix() {
+    let p1 = PointXY { x: 5, y: 10.4 };
+    let p2 = PointXY { x: "Hello", y: 'c' };
+
+    let p3 = p1.mixup(p2);
+
+    println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
+}
+
+use std::cmp::Ordering;
+use std::fmt::Debug;
+use std::fmt::Display;
+
+//#[derive(Eq)]
+struct TW {
+    username: String,
+    content: String,
+    reply: bool,
+    retweet: bool,
+}
+
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
+    }
+}
+
+/* impl Display for TW {
+    fn fmt(&self, _: &mut std::fmt::Formatter<'_>) -> std::result::Result<(), std::fmt::Error> {
+        println!("{}", self.reply);
+        Ok(())
+    }
+}
+
+impl Ord for TW {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.username.cmp(&other.username)
+    }
+}
+
+impl PartialEq for TW {
+    fn eq(&self, other: &Self) -> bool {
+        self.username == other.username
+    }
+}
+
+impl PartialOrd for TW {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+} */
+
+fn copy_trait() {
+    let p1 = Pair::new(String::from("First Item"), String::from("Second Item"));
+    p1.cmp_display();
+
+    /* let tweet1 = TW {
+        username: String::from("horse_ebooks"),
+        content: String::from("of course, as you probably already know, people"),
+        reply: false,
+        retweet: false,
+    };
+
+    let tweet2 = TW {
+        username: String::from("horse_ebooks"),
+        content: String::from("of course, as you probably already know, people"),
+        reply: false,
+        retweet: false,
+    };
+
+    let p1 = Pair::new(tweet1, tweet2);
+    p1.cmp_display(); */
+}
+
 trait Summary {
     fn summarize(&self) -> String;
     fn details(&self) -> String {
@@ -170,6 +286,7 @@ trait CustomDisplay {
     fn info(&self) -> String;
 }
 
+#[derive(Debug)]
 struct NewsArticle {
     headline: String,
     location: String,
@@ -183,6 +300,7 @@ impl Summary for NewsArticle {
     }
 }
 
+#[derive(Debug)]
 struct Tweet {
     username: String,
     content: String,
@@ -211,13 +329,15 @@ fn notify(item: &impl Summary) {
 
 /* fn notify<T: Summary>(item: &T) {
     println!("Breaking news! {}", item.summarize());
-} */
-
+}
+ */
 /* fn notify(item: &(impl Summary + CustomDisplay)) {
     println!("From Tweeter user {}", item.info());
     println!("Breaking news! {}", item.summarize());
 } */
 
+//fn returns_summarizable(switch: bool) -> impl Summary {
+//fn returns_summarizable(switch: bool) -> Box <Summary> {
 fn returns_summarizable(switch: bool) -> Box<dyn Summary> {
     /* Tweet {
         username: String::from("horse_ebooks"),
@@ -245,7 +365,7 @@ fn returns_summarizable(switch: bool) -> Box<dyn Summary> {
     }
 }
 
-fn code_04() {
+fn impl_trait() {
     let tweet = Tweet {
         username: String::from("horse_ebooks"),
         content: String::from("of course, as you probably already know, people"),
@@ -267,54 +387,28 @@ fn code_04() {
 
     println!("New article available! {}", article.details());
 
-    notify(&tweet);
+    //notify(&tweet);
 
-    returns_summarizable(true);
+    /* let res = returns_summarizable(true);
+    res.details(); */
 }
 
-use std::fmt::Display;
-
-struct Pair<T> {
-    x: T,
-    y: T,
-}
-
-impl<T> Pair<T> {
-    fn new(x: T, y: T) -> Self {
-        Self { x, y }
+fn borrow_val() {
+    // example 1
+    /* let r;
+    {
+        let x = 5;
+        r = &x;
     }
-}
 
-impl<T: Display + PartialOrd> Pair<T> {
-    fn cmp_display(&self) {
-        if self.x >= self.y {
-            println!("The largest member is x = {}", self.x);
-        } else {
-            println!("The largest member is y = {}", self.y);
-        }
+    println!("r = {}", r); */
+
+    // example 2
+    {
+        let x = 5;
+        let r = &x;
+        println!("r {}", r);
     }
-}
-
-fn code_05() {
-    let p1 = Pair::new(String::from("First Item"), String::from("Second Item"));
-    p1.cmp_display();
-
-    /* let tweet1 = Tweet {
-        username: String::from("horse_ebooks"),
-        content: String::from("of course, as you probably already know, people"),
-        reply: false,
-        retweet: false,
-    };
-
-    let tweet2 = Tweet {
-        username: String::from("horse_ebooks"),
-        content: String::from("of course, as you probably already know, people"),
-        reply: false,
-        retweet: false,
-    };
-
-    let p1 = Pair::new(tweet1, tweet2);
-    p1.cmp_display(); */
 }
 
 /* fn longest(x: &str, y: &str) -> &str {
@@ -345,11 +439,18 @@ error[E0515]: cannot return value referencing local variable `result`
 */
 
 /* fn longest<'a>(x: &str, y: &str) -> &'a str {
-    let result = String::from("really long string");
-    result.as_str()
+    let result: String = String::from("really long string");
+    let borrow: &'a str = result.as_str();
+    borrow
 } */
 
-fn code_06() {
+/* fn longest(x: &str, y: &str) -> &'static str {
+    let result: String = String::from("really long string");
+    let borrow: &'static str = result.as_str();
+    borrow
+} */
+
+fn long_live_string() {
     let string1 = String::from("abcd");
     let string2 = "xyz";
 
@@ -369,7 +470,7 @@ error[E0597]: `string2` does not live long enough
     |                                          ------ borrow later used here
 */
 
-fn code_07() {
+fn inequal_lifetime() {
     /* let string1 = String::from("long string is long");
     let result;
     {
@@ -395,7 +496,7 @@ impl<'a> ImportantExcerpt<'a> {
 
 fn passover(instance: ImportantExcerpt) {}
 
-fn code_08() {
+fn struct_lifeitme() {
     let novel = String::from("Call me Ishmael. Some years ago...");
     let first_sentence = novel.split('.').next().expect("Could not find a '.'");
     let instance = ImportantExcerpt {
@@ -417,14 +518,34 @@ fn first_word(s: &str) -> &str {
     &s[..]
 }
 
-fn code_09() {
+fn word_lifetime() {
     let str = String::from("hello world");
-    let word = first_word(&str);
+    let word = first_word(str.as_str());
     println!("First word is {}", word);
 }
 
-static GLB_STR: &'static str = "A static string";
+static GLB_NUM: i32 = 10;
 
-fn code_10() {
-    println!("{}", GLB_STR);
+fn ret_GLB_NUM () -> &'static i32{
+    & GLB_NUM
+}
+
+fn static_value() {
+    let res = ret_GLB_NUM();
+    println!("{}", res);
+}
+
+//fn print_it( input: impl Debug + 'static ) {
+fn print_it( input: impl Debug  ) {
+    println!( "'static value passed in is: {:?}", input );
+}
+
+fn trait_bound() {
+    // i is owned and contains no references, thus it's 'static:
+    let i = 5;
+    print_it(i);
+
+    // oops, &i only has the lifetime defined by the scope of
+    // main(), so it's not 'static:
+    print_it(&i);
 }
