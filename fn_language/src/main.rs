@@ -3,50 +3,39 @@ use std::thread;
 use std::time::Duration;
 
 fn main() {
-    println!("Memorization on closure: ");
-    generate_workout(10, 30);
+    //generate_workout(10, 30);
 
-    //println!("Memorization on closure V2: ");
     //generate_workout_v2(10, 30);
 
-    //println!("Capture value in closure vs function: ");
     //capture_pr_env();
 
-    //println!("simple iterator example: ");
     //simple_iterator();
 
-    //println!("Iterator with filter: ");
     //iterator_filter();
 
-    //println!("Customized iterator: ");
     //customize_iterator();
 
-    //println!("Conditional if let example: ");
+    //using_other_iterator_trait_methods();
+
     //cond_let();
 
-    //println!("While let example: ");
     //while_let();
 
-    //println!("Irrefutable/Refutable pattern: ");
+    //loop_code();
+
     //pattern_intro();
 
-    //println!("Pattern match advanced code: ");
     //pattern_more();
 
-    //println!("Structure destructure with pattern: ");
     //destructure();
 
-    //println!("Nested Struct-Enum destructure with pattern: ");
     //nested_destructure();
 
-    //println!("Ignore some recipent with underscores: ");
     //ignore_underscore();
 
-    //println!("Match guard with pattern: ");
     //match_guard();
 
-    //println!("Bindings code: ");
-    //bindings();
+    bindings();
 }
 
 // struct Cacher<T: Fn(u32) -> u32>
@@ -248,6 +237,13 @@ fn iterator_filter() {
     }
 }
 
+/* pub trait Iterator {
+    type Item;
+
+    fn next(&mut self) -> Option<Self::Item>;
+} */
+
+#[derive(Debug)]
 struct Counter {
     count: u32,
 }
@@ -286,6 +282,16 @@ fn customize_iterator() {
     for cnt in counter {
         println!("cnt: {}", cnt);
     }
+    //println!("{:?}", counter);
+}
+
+fn using_other_iterator_trait_methods() {
+    let sum: u32 = Counter::new()
+        .zip(Counter::new().skip(1))
+        .map(|(a, b)| a * b)
+        .filter(|x| x % 3 == 0)
+        .sum();
+    assert_eq!(18, sum);
 }
 
 fn cond_let() {
@@ -318,6 +324,14 @@ fn while_let() {
 
     while let Some(top) = stack.pop() {
         println!("{}", top);
+    }
+}
+
+fn loop_code() {
+    let v = vec!['a', 'b', 'c'];
+
+    for (index, value) in v.iter().enumerate() {
+        println!("{} is at index {}", value, index);
     }
 }
 
