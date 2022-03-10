@@ -1,30 +1,59 @@
 fn main() {
-    //code1();
+    //trait_life();
+    
+    //simple_box();
 
-    //code2();
+    //rec_no_box();
 
-    //code3();
+    //rec_w_box();
 
-    //code4();
+    //reg_refer();
 
-    //code5();
+    //reg_mut_refer();
 
-    //code6();
+    //not_in_stack();
 
-    //code7();
+    //custom_deref();
 
-    //code8();
+    //deref_coercion();
 
-    //code9();
+    //drop_sequeunce();
 
-    //code10();
+    //explicit_drop();
 
-    //code11();
+    //intro_rc();
 
-    code12();
+    //ref_count();
+
+    //ref_thread();
+
+    rc_refcell();
 }
 
-fn code1() {
+fn trait_life() {
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result =
+        longest_with_an_announcement(string1.as_str(), string2, "Today is someone's birthday!");
+    println!("The longest string is {}", result);
+}
+
+use std::fmt::Display;
+
+fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+where
+    T: Display,
+{
+    println!("Announcement! {}", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+fn simple_box() {
     let b = Box::new(5);
     println!("b = {}", b);
 }
@@ -47,25 +76,25 @@ help: insert some indirection (e.g., a `Box`, `Rc`, or `&`) to make `List` repre
 /* enum List {
     Cons(i32, List),
     Nil,
-} */
-
-fn code2() {
-    //let list = List::Cons(1, List::Cons(2, List::Cons(3, List::Nil)));
 }
 
-enum List {
+fn rec_no_box() {
+    let list = List::Cons(1, List::Cons(2, List::Cons(3, List::Nil)));
+} */
+
+/* enum List {
     Cons(i32, Box<List>),
     Nil,
 }
 
-fn code3() {
+fn rec_w_box() {
     let list = List::Cons(
         1,
         Box::new(List::Cons(2, Box::new(List::Cons(3, Box::new(List::Nil))))),
     );
-}
+} */
 
-fn code4() {
+fn reg_refer() {
     let x = 5;
     let y = &x;
 
@@ -83,23 +112,12 @@ fn code4() {
     //assert_eq!(5, y);
 }
 
-fn code5() {
+fn reg_mut_refer() {
     let mut x = 5;
     let mut y = &mut x;
 
-    /*
-    error[E0277]: can't compare `{integer}` with `&{integer}`
-      --> src/main.rs:59:5
-       |
-    59 |     assert_eq!(5, y);
-       |     ^^^^^^^^^^^^^^^^^ no implementation for `{integer} == &{integer}`
-       |
-       = help: the trait `PartialEq<&{integer}>` is not implemented for `{integer}`
-    */
-    //assert_eq!(5, y);
-
-    /* let mut a = 10;
-    y = &mut a; */
+    //let mut a = 10;
+    //y = &mut a;
     *y = 10;
 
     println!("*y = {}", *y);
@@ -107,7 +125,7 @@ fn code5() {
     //println!("x = {} and *y = {}", x, *y);
 }
 
-fn code6() {
+fn not_in_stack() {
     let mut x = 5;
     let y = Box::new(x);
 
@@ -137,12 +155,11 @@ impl<T> Deref for MyBox<T> {
     type Target = T;
 
     fn deref(&self) -> &T {
-        //&self.x
-        &self.y
+        &self.x
     }
 }
 
-fn code7() {
+fn custom_deref() {
     let a = 5;
     let b = 10;
     let y = MyBox::new(a, b);
@@ -161,15 +178,19 @@ fn code7() {
 }
 
 fn hello(name: &str) {
+//fn hello(name: &mut str) {
     println!("Hello, {}!", name);
 }
 
 //deref coercion
-fn code8() {
+fn deref_coercion() {
     let m = MyBox::new(String::from("Rust"), String::from("C/C++"));
 
     hello(&(*m)[..]);
     //hello(&m);
+
+    //let mut m = MyBox::new(String::from("Rust"), String::from("C/C++"));
+    //hello(&mut m);
 }
 
 struct CustomSmartPointer {
@@ -182,7 +203,7 @@ impl Drop for CustomSmartPointer {
     }
 }
 
-fn code9() {
+fn drop_sequeunce() {
     let c = CustomSmartPointer {
         data: String::from("c instance"),
     };
@@ -192,7 +213,7 @@ fn code9() {
     println!("CustomSmartPointers created.");
 }
 
-fn code10() {
+fn explicit_drop() {
     let c = CustomSmartPointer {
         data: String::from("some data"),
     };
@@ -214,7 +235,7 @@ enum List3 {
     Nil,
 }
 
-fn code11() {
+fn intro_rc() {
     /* let a = List2::Cons(5, Box::new(List2::Cons(10, Box::new(List2::Nil))));
     let b = List2::Cons(3, Box::new(a));
     let c = List2::Cons(4, Box::new(a)); */
@@ -227,7 +248,7 @@ fn code11() {
     let c = List3::Cons(4, Rc::clone(&a));
 }
 
-fn code12() {
+fn ref_count() {
     let a = Rc::new(List3::Cons(
         5,
         Rc::new(List3::Cons(10, Rc::new(List3::Nil))),
@@ -240,4 +261,49 @@ fn code12() {
         println!("count after creating c = {}", Rc::strong_count(&a));
     }
     println!("count after c goes out of scope = {}", Rc::strong_count(&a));
+}
+
+use std::thread;
+
+fn ref_thread(){
+    let a = Rc::new(List3::Cons(
+        5,
+        Rc::new(List3::Cons(10, Rc::new(List3::Nil))),
+    ));
+    let b = Box::new(5);
+
+    let handle = thread::spawn(move || {
+        //println!("count after creating a = {}", Rc::strong_count(&a));
+        println!("b = {}", b);
+    });
+
+    handle.join();
+}
+
+#[derive(Debug)]
+enum List {
+    Cons(Rc<RefCell<i32>>, Rc<List>),
+    Nil,
+}
+
+use crate::List::{Cons, Nil};
+use std::cell::RefCell;
+
+fn rc_refcell() {
+    let value = Rc::new(RefCell::new(5));
+
+    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+
+    let b = Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+
+    println!("a before = {:?}", a);
+    println!("b before = {:?}", b);
+    println!("b before = {:?}", c);
+
+    *value.borrow_mut() += 10;
+
+    println!("a after = {:?}", a);
+    println!("b after = {:?}", b);
+    println!("c after = {:?}", c);
 }
