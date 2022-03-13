@@ -9,6 +9,8 @@ fn main() {
 
     //capture_pr_env();
 
+    fn_traits();
+
     //simple_iterator();
 
     //iterator_filter();
@@ -35,7 +37,7 @@ fn main() {
 
     //match_guard();
 
-    bindings();
+    //bindings();
 }
 
 // struct Cacher<T: Fn(u32) -> u32>
@@ -71,7 +73,7 @@ where
 }
 
 fn generate_workout(intensity: u32, random_number: u32) {
-    let mut expensive_result = Cacher::new(|num| {
+    let mut expensive_result = Cacher::new(|num| -> u32 {
         println!("calculating slowly...");
         thread::sleep(Duration::from_secs(2));
         num
@@ -125,8 +127,9 @@ where
 }
 
 fn generate_workout_v2(intensity: u32, random_number: u32) {
-    let mut expensive_result = CacherV2::new(|num| {
-        println!("calculating slowly...");
+    let test = String::from("hello");
+    let mut expensive_result = CacherV2::new(move |num| {
+        println!("calculating slowly... {}", test);
         thread::sleep(Duration::from_secs(2));
         num
     });
@@ -165,6 +168,25 @@ fn capture_pr_env() {
     println!("can't use x here: {:?}", x);
     let y = vec![1, 2, 3];
     assert!(equal_to_x(y)); */
+}
+
+fn recv_fn<T>(mut code: T, val: u32)
+where
+    T: FnMut(u32),
+{
+    code(val);
+}
+
+fn fn_traits() {
+    let mut rand = 20;
+    let code = move |num: u32| {
+        rand += num;
+        println!("rand: {}", rand);
+    };
+
+    println!("rand: {}", rand);
+    recv_fn(code, rand);
+    println!("rand: {}", rand);
 }
 
 fn simple_iterator() {
