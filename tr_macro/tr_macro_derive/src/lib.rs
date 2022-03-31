@@ -26,10 +26,12 @@ fn impl_hello_macro(ast: &syn::DeriveInput) -> TokenStream {
     gen.into()
 }
 
-/* #[proc_macro_attribute]
+#[proc_macro_attribute]
 pub fn route(attr: TokenStream, item: TokenStream) -> TokenStream {
-} */
+    return item
+}
 
-/* #[proc_macro]
+#[proc_macro]
 pub fn sql(input: TokenStream) -> TokenStream {
-} */
+    return input
+}

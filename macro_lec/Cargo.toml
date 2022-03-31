@@ -6,6 +6,8 @@ edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+proc-macro = true
+
 [dependencies]
-tr_macro = {path = "../tr_macro", version="0.1.0", registry="my-registry"}
-tr_macro_derive = { path = "../tr_macro/tr_macro_derive",  version="0.1.0", registry="my-registry"}
+tr_macro = {path = "../tr_macro", version="0.1.0"}
+tr_macro_derive = { path = "../tr_macro/tr_macro_derive",  version="0.1.0"}

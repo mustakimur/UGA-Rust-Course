@@ -1,5 +1,5 @@
 fn main() {
-    raw_pointer();
+    //raw_pointer();
 
     //calling_unsafe();
 
@@ -19,7 +19,7 @@ fn main() {
 
     //not_only_function();
 
-    //return_closure();
+    return_closure();
 
     //associate_types();
 
@@ -58,15 +58,15 @@ fn raw_pointer() {
     let r3 = address as *const i32;
 
     unsafe {
-        println!("r1 is: {}", *r1);
-        println!("r2 is: {}", *r2);
-        //println!("r2 is: {}", *r3);
+        //println!("r1 is: {}", *r1);
+        //println!("r2 is: {}", *r2);
+        println!("r2 is: {}", *r3);
 
         //*r1 = 10;
-        *r2 = 20;
+        //*r2 = 20;
 
-        println!("r1 is: {}", *r1);
-        println!("r2 is: {}", *r2);
+        //println!("r1 is: {}", *r1);
+        //println!("r2 is: {}", *r2);
     }
 }
 
@@ -213,7 +213,7 @@ union MyUnion {
 }
 
 fn unsafe_union() {
-    let u = MyUnion { f1: 1 };
+    let u = MyUnion { f2: 1.0 };
     let f = unsafe { u.f1 };
     println!("{}", f);
 }
