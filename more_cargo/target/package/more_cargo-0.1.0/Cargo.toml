@@ -13,6 +13,7 @@
 edition = "2021"
 name = "more_cargo"
 version = "0.1.0"
+description = "a tutorial to teach rust"
 license = "MIT OR Apache-2.0"
 resolver = "2"
 [profile.dev]
