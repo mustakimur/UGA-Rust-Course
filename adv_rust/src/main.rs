@@ -19,7 +19,7 @@ fn main() {
 
     //not_only_function();
 
-    return_closure();
+    //return_closure();
 
     //associate_types();
 
@@ -37,7 +37,7 @@ fn main() {
 
     //never_return();
 
-    //unknown_size();
+    unknown_size();
 
     //mutex_sample();
 
@@ -222,12 +222,16 @@ fn add_one(x: i32) -> i32 {
     x + 1
 }
 
+fn add_two(x: i32) -> i32 {
+    x + 2
+}
+
 fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
     f(arg) + f(arg)
 }
 
 fn fn_pointer_pass() {
-    let answer = do_twice(add_one, 5);
+    let answer = do_twice(add_two, 5);
 
     println!("The answer is: {}", answer);
 }
@@ -360,17 +364,17 @@ impl Wizard for Human {
     }
 }
 
-impl Human {
+/* impl Human {
     fn fly(&self) {
         println!("*waving arms furiously*");
     }
-}
+} */
 
 fn method_same_name() {
     let person = Human;
     Pilot::fly(&person);
     Wizard::fly(&person);
-    person.fly();
+    //person.fly();
 }
 
 trait Animal {
@@ -446,8 +450,16 @@ fn new_type() {
     ff();
 }
 
+fn never_fn() -> ! {
+    /* let x: ! = { 123 };
+    x */
+    panic!("lets panic");
+}
+
 fn never_return() {
-    let value = Some(50);
+    //never_fn();
+
+    let mut value = None;
     /* loop {
         let guess: u32 = match value {
             Some(num) => num,
@@ -455,12 +467,17 @@ fn never_return() {
         };
     } */
 
-    /* loop {
-        let guess: u32 = match value {
+    println!("before");
+    let mut guess: u32;
+    loop {
+        guess = match value {
             Some(num) => num,
             None => continue,
         };
-    } */
+        println!("Guess: {}", guess);
+        value = Some(50);
+    }
+    println!("outside guess {}", guess);
 
     /* loop {
         let guess: u32 = match value {
@@ -504,9 +521,10 @@ fn mutex_sample() {
         let mut num = m.lock().unwrap();
         *num = 6;
     }
+    println!("m = {:?}", m);
 
-    //let mut num = m.lock().unwrap();
-    //*num = 10;
+    let mut num = m.lock().unwrap();
+    *num = 10;
     println!("m = {:?}", m);
 }
 
@@ -557,7 +575,7 @@ fn mutex_share_unsafe_rc() {
 
 use std::sync::Arc;
 
-fn mutex_share_safe_rc(){
+fn mutex_share_safe_rc() {
     let counter = Arc::new(Mutex::new(0));
     let mut handles = vec![];
 
