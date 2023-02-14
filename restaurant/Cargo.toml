@@ -14,4 +14,12 @@ path = "src/lib.rs"
 name = "mybin"
 path = "src/bin/bin.rs"
 
+[[bin]]
+name = "myalt"
+path = "src/bin/balt.rs"
+
+[[bin]]
+name = "more"
+path = "src/bin/more.rs"
+
 [dependencies]

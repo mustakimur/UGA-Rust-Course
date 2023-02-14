@@ -90,3 +90,11 @@ use libs::mylibs::hosting3;
 pub fn eat_at_restaurant3() {
     hosting3::add_to_waitlist3();
 }
+
+pub use self::implementation::api;
+
+mod implementation {
+    pub mod api {
+        pub fn f() {}
+    }
+}
