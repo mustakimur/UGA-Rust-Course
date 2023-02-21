@@ -15,6 +15,8 @@ fn main() {
 
     //cl_fn_once();
 
+    more_closure();
+
     //println!("Code where new thread is trying to use values of main thread ...");
     //thread_share();
 
@@ -176,6 +178,39 @@ fn cl_fn_once() {
     consume_with_relish(consume_and_return_x);
 }
 
+fn more_closure() {
+    {
+        let list = vec![1, 2, 3];
+        println!("Before defining closure: {:?}", list);
+
+        let only_borrows = || println!("From closure: {:?}", list);
+
+        println!("Before calling closure: {:?}", list);
+        only_borrows();
+        println!("After calling closure: {:?}", list);
+    }
+
+    {
+        let mut list = vec![1, 2, 3];
+        println!("Before defining closure: {:?}", list);
+
+        let mut borrows_mutably = || list.push(7);
+
+        borrows_mutably();
+        println!("After calling closure: {:?}", list);
+    }
+
+    {
+        let mut list = vec![1, 2, 3];
+        println!("Before defining closure: {:?}", list);
+
+        let mut borrows_mutably = /*move*/ || list.push(7);
+
+        borrows_mutably();
+        println!("After calling closure: {:?}", list);
+    }
+}
+
 fn consume_with_relish<F>(func: F)
 where
     F: FnOnce() -> String,
@@ -241,7 +276,7 @@ fn channel_multi_producer() {
 
         for val in vals {
             tx1.send(val).unwrap();
-            println!("{}", val);
+            //println!("{}", val);
             thread::sleep(Duration::from_secs(1));
         }
     });
