@@ -9,7 +9,7 @@ fn main() {
 
     //capture_pr_env();
 
-    fn_traits();
+    //fn_traits();
 
     //simple_iterator();
 
@@ -19,7 +19,7 @@ fn main() {
 
     //using_other_iterator_trait_methods();
 
-    //cond_let();
+    cond_let();
 
     //while_let();
 
@@ -224,6 +224,28 @@ fn simple_iterator() {
     let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
 
     assert_eq!(v2, vec![2, 3, 4]);
+
+    println!("new code ...");
+    let v3 = vec![1, 2, 3, 4];
+    let mut sum = 0;
+    let v4: Vec<_> = v3
+        .iter()
+        .map(|x| {
+            sum += x;
+            println!("{}", x);
+            x
+        })
+        .collect();
+    println!("{}", sum);
+
+    let mut c = 0;
+
+    for pair in ['a', 'b', 'c'].into_iter().map(|letter| {
+        c += 1;
+        (letter, c)
+    }) {
+        println!("{pair:?}");
+    }
 }
 
 #[derive(Debug)]
@@ -308,6 +330,11 @@ fn customize_iterator() {
 }
 
 fn using_other_iterator_trait_methods() {
+    let counter = Counter::new().skip(1);
+
+    for cnt in counter {
+        println!("cnt: {}", cnt);
+    }
     let sum: u32 = Counter::new()
         .zip(Counter::new().skip(1))
         .map(|(a, b)| a * b)
