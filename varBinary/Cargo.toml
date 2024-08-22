@@ -1,0 +1,11 @@
+[package]
+name = "varBin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+
+[[bin]]
+name = "app"
+path = "/home/mustakimur/teaching/secure_programming/fall_2024/varBinary/binExample/example.rs"
