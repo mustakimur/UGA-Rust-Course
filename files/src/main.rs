@@ -2,7 +2,6 @@ use std::error::Error;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io;
-use std::io::prelude::*;
 use std::io::ErrorKind;
 use std::io::Read;
 use std::io::{BufRead, BufReader, Write};
@@ -25,7 +24,7 @@ fn main() {
 
     //directory_traversal();
 
-    fd_lock();
+    file_guard_example();
 }
 
 fn panic_msg() {
@@ -101,7 +100,7 @@ fn file_append_write() {
     let mut file = OpenOptions::new()
         .write(true)
         .append(true)
-        .open("my-file")
+        .open("hello.txt")
         .unwrap();
 
     if let Err(e) = writeln!(file, "A new line!") {
@@ -159,24 +158,23 @@ fn directory_traversal() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-extern crate file_lock;
+use file_guard::Lock;
+use std::thread;
+use std::time::Duration;
 
-use file_lock::{FileLock, FileOptions};
+fn file_guard_example() -> Result<(), Box<dyn Error>> {
+    let mut file = OpenOptions::new()
+        .read(true)
+        .append(true)
+        .create(true)
+        .open("hello.txt")?;
 
-fn fd_lock() {
-    let should_we_block  = true;
-    let options = FileOptions::new()
-                        .write(true)
-                        .create(true)
-                        .append(true);
-
-    let mut filelock = match FileLock::lock("myfile.txt", should_we_block, options) {
-        Ok(lock) => lock,
-        Err(err) => panic!("Error getting write lock: {}", err),
-    };
-
-    writeln!(filelock.file, "Hello, World");
-
-    // Manually unlocking is optional as we unlock on Drop
-    filelock.unlock();
+    let mut num = 0;
+    loop {
+        let mut lock = file_guard::lock(&mut file, Lock::Exclusive, 0, 1)?;
+        let str = format!("{}-{}", "hello lock", num);
+        writeln!(&mut lock, "{}", str)?;
+        thread::sleep(Duration::from_secs(2));
+        num += 1;
+    }
 }
