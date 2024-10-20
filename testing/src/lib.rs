@@ -18,8 +18,8 @@ pub fn add_two(a: i32) -> i32 {
     a + 2
 }
 
-pub fn err_msg() -> Result<String, io::Error> {
-    let mut f = File::open("hello.txt")?;
+pub fn err_msg(path: String) -> Result<String, io::Error> {
+    let mut f = File::open(path)?;
     let mut s = String::new();
     f.read_to_string(&mut s)?;
     Ok(s)
@@ -73,7 +73,7 @@ mod tests {
 
     #[test]
     fn check_file() -> Result<(), io::Error> {
-        match err_msg() {
+        match err_msg("hello.txt".to_string()) {
             Err(e) => Err(e),
             _ => Ok(()),
         }
