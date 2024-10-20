@@ -1,6 +1,6 @@
 fn main() {
     //trait_life();
-    
+
     //simple_box();
 
     //rec_no_box();
@@ -27,7 +27,15 @@ fn main() {
 
     //ref_thread();
 
-    rc_refcell();
+    //refcell();
+
+    //send_75();
+
+    //rc_refcell();
+
+    //rCycle();
+
+    //weak_tree();
 }
 
 fn trait_life() {
@@ -129,6 +137,8 @@ fn not_in_stack() {
     let mut x = 5;
     let y = Box::new(x);
 
+    println!("x = {} and *y = {}", x, *y);
+
     assert_eq!(5, x);
     assert_eq!(5, *y);
 
@@ -186,11 +196,11 @@ fn hello(name: &str) {
 fn deref_coercion() {
     let m = MyBox::new(String::from("Rust"), String::from("C/C++"));
 
-    hello(&(*m)[..]);
-    //hello(&m);
+    //hello(&(*m)[..]);
+    hello(&m);
 
-    //let mut m = MyBox::new(String::from("Rust"), String::from("C/C++"));
-    //hello(&mut m);
+    /* let mut m = MyBox::new(String::from("Rust"), String::from("C/C++"));
+    hello(&mut m); */
 }
 
 struct CustomSmartPointer {
@@ -229,23 +239,25 @@ enum List2 {
 }
 
 use std::rc::Rc;
-
+#[derive(Debug)]
 enum List3 {
     Cons(i32, Rc<List3>),
     Nil,
 }
 
 fn intro_rc() {
-    /* let a = List2::Cons(5, Box::new(List2::Cons(10, Box::new(List2::Nil))));
+    let a = List2::Cons(5, Box::new(List2::Cons(10, Box::new(List2::Nil))));
     let b = List2::Cons(3, Box::new(a));
-    let c = List2::Cons(4, Box::new(a)); */
+    //let c = List2::Cons(4, Box::new(a));
 
-    let a = Rc::new(List3::Cons(
+    /* let a = Rc::new(List3::Cons(
         5,
         Rc::new(List3::Cons(10, Rc::new(List3::Nil))),
     ));
     let b = List3::Cons(3, Rc::clone(&a));
     let c = List3::Cons(4, Rc::clone(&a));
+    //drop(a);
+    //println!("b after dropping = {:?}", b); */
 }
 
 fn ref_count() {
@@ -265,7 +277,7 @@ fn ref_count() {
 
 use std::thread;
 
-fn ref_thread(){
+fn ref_thread() {
     let a = Rc::new(List3::Cons(
         5,
         Rc::new(List3::Cons(10, Rc::new(List3::Nil))),
@@ -288,6 +300,25 @@ enum List {
 
 use crate::List::{Cons, Nil};
 use std::cell::RefCell;
+
+fn refcell() {
+    // Create an Rc with a RefCell wrapping an i32 value
+    let value = Rc::new(RefCell::new(42));
+
+    // Clone the Rc to create a new reference to the same data
+    let value_clone = Rc::clone(&value);
+
+    println!("value count: {}", Rc::strong_count(&value));
+    println!("cloned value: {:?}", value_clone);
+
+    // Mutate the value using the first Rc reference
+    {
+        let mut val = value.borrow_mut();
+        *val += 10; // Increment the value by 10
+    }
+
+    println!("cloned value: {:?}", value_clone);
+}
 
 fn rc_refcell() {
     let value = Rc::new(RefCell::new(5));
@@ -323,6 +354,7 @@ where
     T: Messenger,
 {
     pub fn new(messenger: &'a T, max: usize) -> LimitTracker<'a, T> {
+        println!("LimitTracker created");
         LimitTracker {
             messenger,
             value: 0,
@@ -347,40 +379,149 @@ where
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::cell::RefCell;
+#[derive(Debug)]
+struct MockMessenger {
+    sent_messages: RefCell<Vec<String>>,
+}
 
-    struct MockMessenger {
-        sent_messages: RefCell<Vec<String>>,
-    }
-
-    impl MockMessenger {
-        fn new() -> MockMessenger {
-            MockMessenger {
-                sent_messages: RefCell::new(vec![]),
-            }
+impl MockMessenger {
+    fn new() -> MockMessenger {
+        println!("MockMessenger created");
+        MockMessenger {
+            sent_messages: RefCell::new(vec![]),
         }
     }
+}
 
-    impl Messenger for MockMessenger {
-        fn send(&self, message: &str) {
+impl Messenger for MockMessenger {
+    fn send(&self, message: &str) {
+        {
             let mut one_borrow = self.sent_messages.borrow_mut();
-            //let mut two_borrow = self.sent_messages.borrow_mut();
-
             one_borrow.push(String::from(message));
-            //two_borrow.push(String::from(message));
+        }
+
+        /* {let mut two_borrow = self.sent_messages.borrow_mut();
+        two_borrow.push(String::from(message));} */
+    }
+}
+
+fn send_75() {
+    let mock_messenger = MockMessenger::new();
+    let mut limit_tracker = LimitTracker::new(&mock_messenger, 100);
+
+    limit_tracker.set_value(80);
+
+    println!("mock_messenger = {:?}", mock_messenger);
+    /* limit_tracker.set_value(90);
+    println!("mock_messenger = {:?}", mock_messenger); */
+}
+
+use crate::ListC::{ConsC, NilC};
+
+#[derive(Debug)]
+enum ListC {
+    ConsC(i32, RefCell<Rc<ListC>>),
+    NilC,
+}
+
+impl ListC {
+    fn tail(&self) -> Option<&RefCell<Rc<ListC>>> {
+        match self {
+            ConsC(_, item) => Some(item),
+            NilC => None,
         }
     }
+}
 
-    #[test]
-    fn it_sends_an_over_75_percent_warning_message() {
-        let mock_messenger = MockMessenger::new();
-        let mut limit_tracker = LimitTracker::new(&mock_messenger, 100);
+fn rCycle() {
+    let a = Rc::new(ConsC(5, RefCell::new(Rc::new(NilC))));
 
-        limit_tracker.set_value(80);
+    println!("a initial rc count = {}", Rc::strong_count(&a));
+    println!("a next item = {:?}", a.tail());
 
-        assert_eq!(mock_messenger.sent_messages.borrow().len(), 1);
+    let b = Rc::new(ConsC(10, RefCell::new(Rc::clone(&a))));
+
+    println!("a rc count after b creation = {}", Rc::strong_count(&a));
+    println!("b initial rc count = {}", Rc::strong_count(&b));
+    println!("b next item = {:?}", b.tail());
+
+    if let Some(link) = a.tail() {
+        *link.borrow_mut() = Rc::clone(&b);
     }
+
+    println!("b rc count after changing a = {}", Rc::strong_count(&b));
+    println!("a rc count after changing a = {}", Rc::strong_count(&a));
+
+    // Uncomment the next line to see that we have a cycle;
+    // it will overflow the stack
+    // println!("a next item = {:?}", a.tail());
+}
+
+use std::rc::Weak;
+
+#[derive(Debug)]
+struct Node {
+    value: i32,
+    parent: RefCell<Weak<Node>>,
+    children: RefCell<Vec<Rc<Node>>>,
+}
+
+fn weak_tree() {
+    let leaf = Rc::new(Node {
+        value: 3,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![]),
+    });
+
+    println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
+
+    println!(
+        "leaf strong = {}, weak = {}",
+        Rc::strong_count(&leaf),
+        Rc::weak_count(&leaf),
+    );
+
+    {
+        let branch = Rc::new(Node {
+            value: 5,
+            parent: RefCell::new(Weak::new()),
+            children: RefCell::new(vec![Rc::clone(&leaf)]),
+        });
+
+        /* leaf parent = None
+        leaf strong = 1, weak = 0
+        branch strong = 1, weak = 0
+        leaf strong = 2, weak = 0
+        leaf parent = None
+        leaf strong = 1, weak = 0 */
+        *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
+
+        /* leaf parent = None
+        leaf strong = 1, weak = 0
+        branch strong = 1, weak = 1
+        leaf strong = 2, weak = 0
+        leaf parent = None
+        leaf strong = 1, weak = 0 */
+
+        println!(
+            "branch strong = {}, weak = {}",
+            Rc::strong_count(&branch),
+            Rc::weak_count(&branch),
+        );
+
+        println!(
+            "leaf strong = {}, weak = {}",
+            Rc::strong_count(&leaf),
+            Rc::weak_count(&leaf),
+        );
+
+        println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
+    }
+
+    println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
+    println!(
+        "leaf strong = {}, weak = {}",
+        Rc::strong_count(&leaf),
+        Rc::weak_count(&leaf),
+    );
 }
