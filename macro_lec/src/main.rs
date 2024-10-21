@@ -113,7 +113,7 @@ impl HelloMacro for Pancakes {
     }
 }
 
-use tr_macro_derive::HelloMacro;
+use tr_macro_derive::{do_copy, sql, HelloMacro};
 
 #[derive(HelloMacro)]
 struct Waffle;
@@ -123,8 +123,10 @@ fn proc_macro_ex() {
     Waffle::hello_macro();
 }
 
-/* #[route(GET, "/")]
-fn index() {} */
+#[do_copy]
+fn hello_world() {
+    println!("Hello, world!");
+}
 
 fn main() {
     //simple_macro();
@@ -139,7 +141,10 @@ fn main() {
 
     //custom_vec();
 
-    proc_macro_ex();
+    //proc_macro_ex();
 
-    //let sql = sql!(SELECT * FROM posts WHERE id=1);
+    hello_world();
+
+    //let sql = sql!("SELECT * FROM posts WHERE id=1");
+    //println!("{}", sql);
 }

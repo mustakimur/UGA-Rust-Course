@@ -21,6 +21,8 @@ fn main() {
 
     //return_closure();
 
+    //ret_function();
+
     //associate_types();
 
     //op_over_add();
@@ -45,13 +47,13 @@ fn main() {
 
     //mutex_share_unsafe_rc();
 
-    //mutex_share_safe_rc();
+    mutex_share_safe_rc();
 
     //create_cycle();
 
     //create_tree();
 
-    tree_viz();
+    //tree_viz();
 }
 
 fn raw_pointer() {
@@ -193,9 +195,9 @@ unsafe trait UnsafeOrd {
 
 unsafe impl UnsafeOrd for Demo {
     fn cmp(&self, other: &Self) -> Ordering {
-        if (self.text == other.text) {
+        if self.text == other.text {
             Ordering::Equal
-        } else if (self.text > other.text) {
+        } else if self.text > other.text {
             Ordering::Greater
         } else {
             Ordering::Less
@@ -262,6 +264,21 @@ fn return_closure() {
     let cls = returns_closure();
     println!("return: {}", cls(3));
 }
+
+fn hello() {
+    println!("Hello from a function pointer!");
+}
+
+// A function that returns a function pointer with the signature `fn() -> ()`
+fn get_function() -> fn() {
+    hello
+}
+
+fn ret_function() {
+    let func = get_function(); // Get the function pointer
+    func(); // Call the function through the pointer
+}
+
 
 /* pub trait Iterator<T> {
     fn next(&mut self) -> Option<T>;
@@ -364,11 +381,11 @@ impl Pilot for Human {
     }
 }
 
-impl Wizard for Human {
+/* impl Wizard for Human {
     fn fly(&self) {
         println!("Up!");
     }
-}
+} */
 
 /* impl Human {
     fn fly(&self) {
@@ -378,9 +395,9 @@ impl Wizard for Human {
 
 fn method_same_name() {
     let person = Human;
-    Pilot::fly(&person);
-    Wizard::fly(&person);
-    //person.fly();
+    //Pilot::fly(&person);
+    //Wizard::fly(&person);
+    person.fly();
 }
 
 trait Animal {
@@ -462,10 +479,23 @@ fn never_fn() -> ! {
     panic!("lets panic");
 }
 
+fn ret_panic(f: bool) -> i32 {
+    if f {
+        return 1;
+    } else {
+        never_fn()
+    }
+}
+
 fn never_return() {
     //never_fn();
 
-    let mut value = None;
+    /* let r = match ret_panic(false) {
+        1 => 10.5,
+        _ => never_fn(),
+    }; */
+
+    let mut value: Option<u32> = None;
     /* loop {
         let guess: u32 = match value {
             Some(num) => num,
@@ -473,17 +503,17 @@ fn never_return() {
         };
     } */
 
-    println!("before");
+    /* println!("before");
     let mut guess: u32;
     loop {
         guess = match value {
             Some(num) => num,
-            None => continue,
+            None => { /* value = Some(50); */ continue},
         };
         println!("Guess: {}", guess);
         value = Some(50);
     }
-    println!("outside guess {}", guess);
+    println!("outside guess {}", guess); */
 
     /* loop {
         let guess: u32 = match value {
@@ -517,6 +547,24 @@ fn unknown_size() {
     struct Bar<T: ?Sized>(T);
     struct BarUse(Bar<[i32]>);
 }
+
+/* fn print_and_sort<T: Ord + std::fmt::Debug + ?Sized>(arr: &mut T) {
+    arr.sort();
+    println!("Sorted array: {:?}", arr);
+} */
+
+fn print_and_sort<T: Ord + std::fmt::Debug>(arr: &mut [T]) {
+    arr.sort();
+    println!("Sorted array: {:?}", arr);
+}
+
+fn arr_sized() {
+    let mut array = [3, 1, 4, 1, 5, 9];
+    
+    // Call the function with a mutable reference to the array.
+    print_and_sort(&mut array);
+}
+
 
 use std::sync::Mutex;
 
